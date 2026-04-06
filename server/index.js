@@ -43,7 +43,11 @@ const upload = multer({
 
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(uploadsDir));
+app.use('/uploads', express.static(uploadsDir, {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.webp')) res.setHeader('Content-Type', 'image/webp');
+  }
+}));
 
 // Serve built frontend in production
 if (process.env.NODE_ENV === 'production') {
