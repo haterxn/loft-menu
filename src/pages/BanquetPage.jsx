@@ -8,7 +8,7 @@ const banquetSets = [
     cold: ['Asorti din carne Carmez','Asorti din cașcaval Loft','Ardei cu feta și bacon','Rulouri de vinete cu cașcaval','Bruschete de 3 tipuri','Asorti de fructe de mare','Salată caeser cu carne de pui','Salată caldă cu carne de pui'],
     cold_ru: ['Ассорти из мяса Кармез','Ассорти из сыра Лофт','Перец с фетой и беконом','Рулеты из баклажанов с сыром','Брускетты 3 видов','Ассорти из морепродуктов','Салат Цезарь с курицей','Тёплый салат с курицей'],
     hot: ['Cârnățel','Frigărui de porc','Frigărui de pui','Cartofi copți la cuptor','Legume la grătar','Carne de porc Norocel'],
-    hot_ru: ['Колбаски','Шашлык из свинины','Шашлык из курицы','Запечённый картофель','Овощи гриль','Свинина Норочел'],
+    hot_ru: ['Колбаски','Шашлык из свинины','Шашлык из курицы','Запечённый картофель','Овощи гриль','Свинина Лофт'],
     dessert: ['Baba cu sos'], dessert_ru: ['Баба с соусом'],
   },
   {
@@ -117,7 +117,7 @@ const dishPhotos = {
   'Шашлык из курицы': null,
   'Запечённый картофель': null,
   'Овощи гриль': 'DSCF3892.webp',
-  'Свинина Норочел': null,
+  'Свинина Лофт': null,
   'Охотничье плато': 'DSCF3837.webp',
   'Свиные рёбрышки': null,
   'Рулет Сальтибока': null,
@@ -181,7 +181,7 @@ export default function BanquetPage() {
           <button className={`lang-btn ${lang === 'ru' ? 'active' : ''}`} onClick={() => setLang('ru')}>RU</button>
         </div>
         <div className="hero-ornament">&#10043; &#10043; &#10043;</div>
-        <h1>NOROC</h1>
+        <h1>LOFT</h1>
         <p className="hero-subtitle">Menu Banchet</p>
         <p style={{ color: 'var(--text-light)', fontSize: '0.95rem', marginTop: '8px' }}>
           {lang === 'ru'
@@ -273,12 +273,12 @@ export default function BanquetPage() {
 
       {/* Footer */}
       <footer className="footer">
-        <div className="footer-name">NOROC</div>
+        <div className="footer-name">LOFT BURGER BAR</div>
         <div className="footer-info">
-          <span>str. Decebal 131, Bălți, Moldova</span>
-          <a href="tel:+37368821888">(+373) 688 21 888</a>
+          <span>Strada Strîi 3, Bălți, Moldova</span>
+          <a href="tel:+37368828822">(+373) 688 28 822</a>
         </div>
-        <p className="footer-copy">&copy; 2024 Restaurant NOROC</p>
+        <p className="footer-copy">&copy; 2024 LOFT Burger Bar</p>
       </footer>
 
       {/* WhatsApp Widget */}
