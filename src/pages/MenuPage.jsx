@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { getCategories, getItems, sendFeedback, sendBooking } from '../api';
+import { getCategories, getItems, sendFeedback } from '../api';
 
 export default function MenuPage() {
   const [categories, setCategories] = useState([]);
@@ -14,11 +13,6 @@ export default function MenuPage() {
   const [fbSent, setFbSent] = useState(false);
   const [fbLoading, setFbLoading] = useState(false);
 
-  // Booking modal
-  const [showBooking, setShowBooking] = useState(false);
-  const [booking, setBooking] = useState({ name: '', phone: '', date: '', guests: '', eventType: '', hall: '', message: '' });
-  const [bookingSent, setBookingSent] = useState(false);
-  const [bookingLoading, setBookingLoading] = useState(false);
 
   useEffect(() => {
     Promise.all([getCategories(), getItems()]).then(([cats, itms]) => {
@@ -50,17 +44,6 @@ export default function MenuPage() {
     setFbLoading(false);
   };
 
-  const handleBooking = async (e) => {
-    e.preventDefault();
-    setBookingLoading(true);
-    try {
-      await sendBooking(booking);
-      setBookingSent(true);
-      setBooking({ name: '', phone: '', date: '', guests: '', eventType: '', hall: '', message: '' });
-    } catch { /* ignore */ }
-    setBookingLoading(false);
-  };
-
   // Group items by category
   const grouped = categories.map(cat => ({
     ...cat,
@@ -75,12 +58,12 @@ export default function MenuPage() {
           <button className={`lang-btn ${lang === 'ro' ? 'active' : ''}`} onClick={() => setLang('ro')}>RO</button>
           <button className={`lang-btn ${lang === 'ru' ? 'active' : ''}`} onClick={() => setLang('ru')}>RU</button>
         </div>
-        <div className="hero-ornament">&#10043; &#10043; &#10043;</div>
-        <h1>NOROC</h1>
-        <p className="hero-subtitle">Restaurant &amp; Banquet Hall</p>
+        <div className="hero-ornament">&#9644; &#9644; &#9644;</div>
+        <h1>LOFT</h1>
+        <p className="hero-subtitle">Burger Bar</p>
         <div className="hero-info">
-          <span>str. Decebal 131, Bălți</span>
-          <span>(+373) 688 21 888</span>
+          <span>Strada Strîi 3, Bălți</span>
+          <span>(+373) 688 28 822</span>
         </div>
       </header>
 
@@ -88,97 +71,19 @@ export default function MenuPage() {
       <div className="booking-banner">
         <div className="booking-banner-inner">
           <div className="booking-banner-text">
-            <span className="booking-banner-icon">&#127878;</span>
+            <span className="booking-banner-icon">&#127828;</span>
             <div>
-              <strong>{lang === 'ru' ? 'Банкетные залы' : 'Săli de banchet'}</strong>
-              <span>{lang === 'ru' ? 'Свадьбы, кумэтрии, юбилеи, корпоративы' : 'Nunți, cumetrii, aniversări, corporate'}</span>
+              <strong>{lang === 'ru' ? 'Режим работы' : 'Program de lucru'}</strong>
+              <span>{lang === 'ru' ? 'Пн-Вс: 10:00-02:00' : 'Lu-Du: 10:00-02:00'}</span>
             </div>
           </div>
           <div className="booking-banner-buttons">
-            <Link to="/banquet" className="btn-booking btn-booking-outline">
-              {lang === 'ru' ? 'Банкетное меню' : 'Menu banchet'}
-            </Link>
-            <button className="btn-booking" onClick={() => { setShowBooking(true); setBookingSent(false); }}>
-              {lang === 'ru' ? 'Забронировать' : 'Rezervă'}
-            </button>
+            <a href="https://wa.me/37368828822" className="btn-booking" target="_blank" rel="noopener noreferrer">
+              {lang === 'ru' ? 'Забронировать столик' : 'Rezervă o masă'}
+            </a>
           </div>
         </div>
       </div>
-
-      {/* Booking modal */}
-      {showBooking && (
-        <div className="modal-overlay" onClick={() => setShowBooking(false)}>
-          <div className="modal booking-modal" onClick={e => e.stopPropagation()}>
-            <h2>{lang === 'ru' ? 'Бронирование зала' : 'Rezervarea sălii'}</h2>
-            <p style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginBottom: '20px' }}>
-              {lang === 'ru' ? 'Оставьте заявку и мы свяжемся с вами' : 'Lăsați o cerere și vă vom contacta'}
-            </p>
-            {bookingSent ? (
-              <div className="feedback-success">
-                {lang === 'ru' ? 'Спасибо! Мы свяжемся с вами для подтверждения брони.' : 'Mulțumim! Vă vom contacta pentru confirmare.'}
-              </div>
-            ) : (
-              <form className="modal-form" onSubmit={handleBooking}>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>{lang === 'ru' ? 'Имя *' : 'Numele *'}</label>
-                    <input className="form-input" value={booking.name} onChange={e => setBooking({ ...booking, name: e.target.value })} required />
-                  </div>
-                  <div className="form-group">
-                    <label>{lang === 'ru' ? 'Телефон *' : 'Telefon *'}</label>
-                    <input className="form-input" type="tel" value={booking.phone} onChange={e => setBooking({ ...booking, phone: e.target.value })} required />
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>{lang === 'ru' ? 'Дата мероприятия *' : 'Data evenimentului *'}</label>
-                    <input className="form-input" type="date" value={booking.date} onChange={e => setBooking({ ...booking, date: e.target.value })} required />
-                  </div>
-                  <div className="form-group">
-                    <label>{lang === 'ru' ? 'Кол-во гостей' : 'Număr de invitați'}</label>
-                    <input className="form-input" type="number" min="1" value={booking.guests} onChange={e => setBooking({ ...booking, guests: e.target.value })} />
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>{lang === 'ru' ? 'Тип мероприятия' : 'Tipul evenimentului'}</label>
-                    <select className="form-input" value={booking.eventType} onChange={e => setBooking({ ...booking, eventType: e.target.value })}>
-                      <option value="">{lang === 'ru' ? 'Выберите...' : 'Selectați...'}</option>
-                      <option value="wedding">{lang === 'ru' ? 'Свадьба' : 'Nuntă'}</option>
-                      <option value="cumetrie">{lang === 'ru' ? 'Кумэтрия' : 'Cumetrie'}</option>
-                      <option value="birthday">{lang === 'ru' ? 'День рождения / Юбилей' : 'Zi de naștere / Aniversare'}</option>
-                      <option value="corporate">{lang === 'ru' ? 'Корпоратив / Конференция' : 'Corporate / Conferință'}</option>
-                      <option value="banquet">{lang === 'ru' ? 'Банкет' : 'Banchet'}</option>
-                      <option value="other">{lang === 'ru' ? 'Другое' : 'Altele'}</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label>{lang === 'ru' ? 'Зал' : 'Sala'}</label>
-                    <select className="form-input" value={booking.hall} onChange={e => setBooking({ ...booking, hall: e.target.value })}>
-                      <option value="">{lang === 'ru' ? 'Выберите зал...' : 'Selectați sala...'}</option>
-                      <option value="sala1">{lang === 'ru' ? 'Sala 1 (до 15 гостей)' : 'Sala 1 (până la 15 invitați)'}</option>
-                      <option value="sala2">{lang === 'ru' ? 'Sala 2 (до 25 гостей)' : 'Sala 2 (până la 25 invitați)'}</option>
-                      <option value="restaurant">{lang === 'ru' ? 'Ресторан à la carte' : 'Restaurant à la carte'}</option>
-                      <option value="terasa">{lang === 'ru' ? 'Терраса' : 'Terasă'}</option>
-                      <option value="foisor">{lang === 'ru' ? 'Фоишор (беседка)' : 'Foișor'}</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>{lang === 'ru' ? 'Пожелания' : 'Dorințe'}</label>
-                  <textarea className="form-textarea" style={{ minHeight: '60px' }} value={booking.message} onChange={e => setBooking({ ...booking, message: e.target.value })} />
-                </div>
-                <div className="modal-actions">
-                  <button type="button" className="btn-cancel" onClick={() => setShowBooking(false)}>{lang === 'ru' ? 'Отмена' : 'Anulare'}</button>
-                  <button type="submit" className="btn-primary" disabled={bookingLoading}>
-                    {bookingLoading ? (lang === 'ru' ? 'Отправка...' : 'Se trimite...') : (lang === 'ru' ? 'Отправить заявку' : 'Trimite cererea')}
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* Category tabs */}
       {categories.length > 0 && (
@@ -215,7 +120,7 @@ export default function MenuPage() {
                       {item.image ? (
                         <img src={`/uploads/${item.image}`} alt={t(item, 'name')} loading="lazy" />
                       ) : (
-                        <div className="placeholder-icon">&#9827;</div>
+                        <div className="placeholder-icon">&#127828;</div>
                       )}
                     </div>
                   </div>
@@ -287,22 +192,22 @@ export default function MenuPage() {
 
       {/* Footer */}
       <footer className="footer">
-        <div className="footer-name">NOROC</div>
+        <div className="footer-name">LOFT BURGER BAR</div>
         <div className="footer-info">
-          <span>str. Decebal 131, Bălți, Moldova</span>
-          <a href="tel:+37368821888">(+373) 688 21 888</a>
-          <a href="mailto:noroc@restaurantebalti.md">noroc@restaurantebalti.md</a>
+          <span>Strada Strîi 3, Bălți, Moldova</span>
+          <a href="tel:+37368828822">(+373) 688 28 822</a>
+          <a href="mailto:loft88888@mail.ru">loft88888@mail.ru</a>
         </div>
         <div className="footer-social">
-          <a href="https://www.instagram.com/restaurant_noroc_balti/" target="_blank" rel="noopener">Instagram</a>
-          <a href="https://www.facebook.com/" target="_blank" rel="noopener">Facebook</a>
+          <a href="https://www.instagram.com/loft_burger_bar" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.facebook.com/share/1JFAXPfUZM/" target="_blank" rel="noopener">Facebook</a>
         </div>
-        <p className="footer-copy">&copy; 2024 Restaurant NOROC. {lang === 'ru' ? 'Все права защищены.' : 'Toate drepturile rezervate.'}</p>
+        <p className="footer-copy">&copy; 2024 LOFT Burger Bar. {lang === 'ru' ? 'Все права защищены.' : 'Toate drepturile rezervate.'}</p>
       </footer>
 
       {/* WhatsApp Widget */}
       <a
-        href="https://wa.me/37368821888"
+        href="https://wa.me/37368828822"
         className="whatsapp-widget"
         target="_blank"
         rel="noopener noreferrer"

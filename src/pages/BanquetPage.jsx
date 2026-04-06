@@ -71,12 +71,89 @@ const sectionIcons = {
   dessert: '🍰',
 };
 
-function DishCard({ name }) {
+const dishPhotos = {
+  'Ассорти из мяса Кармез': 'DSCF3769.webp',
+  'Ассорти из мяса Итальяно': 'DSCF3769.webp',
+  'Ассорти из сыра Лофт': null,
+  'Ассорти из сыра': null,
+  'Ассорти итальянских сыров': null,
+  'Перец с фетой и беконом': null,
+  'Рулеты из баклажанов с сыром': 'DSCF3766.webp',
+  'Рулеты из баклажанов': 'DSCF3766.webp',
+  'Ассорти из морепродуктов': null,
+  'Ассорти из морепродуктов Экстра': null,
+  'Салат Цезарь с курицей': 'DSCF9541.webp',
+  'Тёплый салат с курицей': 'DSCF9523.webp',
+  'Тёплый салат с говядиной': null,
+  'Салат Колоросо': null,
+  'Ассорти тирин и порчето': null,
+  'Язык свекрови': null,
+  'Рулет с фисташкой': null,
+  'Рулет из куриной грудки': 'DSCF3823.webp',
+  'Прошутто': null,
+  'Блинчики Блэк': null,
+  'Маслины, оливки, лимон': null,
+  'Меланзания': 'DSCF3775.webp',
+  'Салат Шеф': null,
+  'Натурели': null,
+  'Буфалино': null,
+  'Томаты по-итальянски': null,
+  'Салат-коктейль из креветок': null,
+  'Свиная вырезка запечённая': null,
+  'Рулет Империал': null,
+  'Рулет со шпинатом': 'DSCF3781.webp',
+  'Холодец': null,
+  'Бри в панировке': null,
+  'Сырные шарики': null,
+  'Салат Верона': null,
+  'Рулет с черносливом': null,
+  'Холодец из говяжьего языка': null,
+  'Язык свекрови + канапе': null,
+  'Салат Норок': null,
+  // Hot
+  'Колбаски': null,
+  'Шашлык из свинины': null,
+  'Шашлык из курицы': null,
+  'Запечённый картофель': null,
+  'Овощи гриль': 'DSCF3892.webp',
+  'Свинина Норочел': null,
+  'Охотничье плато': 'DSCF3837.webp',
+  'Свиные рёбрышки': null,
+  'Рулет Сальтибока': null,
+  'Мичи': null,
+  'Курица со шпинатом': null,
+  'Лосось с брокколи': null,
+  'Плато со свиной рулькой': null,
+  'Лосось в икорном соусе': null,
+  'Говядина в вишнёвом соусе': null,
+  'Лосось Веллингтон': null,
+  'Кролик в сметанном соусе': null,
+  'Плато: свинина, курица, говядина': 'DSCF3841.webp',
+  'Лосось в соусе из икры': null,
+  // Desserts
+  'Баба с соусом': null,
+  'Блинчики с творогом': null,
+  'Блинчики с вишней': null,
+  'Блинчики с халвой': null,
+  'Блинчики с творогом / вишней / халвой': null,
+};
+
+function getDishPhoto(name) {
+  if (dishPhotos[name]) return `/uploads/${dishPhotos[name]}`;
+  return null;
+}
+
+function DishCard({ name, photoKey }) {
+  const photo = getDishPhoto(photoKey || name);
   return (
     <div className="banquet-dish-card">
       <div className="banquet-dish-image">
         <div className="ratio-3-4">
-          <div className="placeholder-icon">&#9827;</div>
+          {photo ? (
+            <img src={photo} alt={name} loading="lazy" />
+          ) : (
+            <div className="placeholder-icon">&#9827;</div>
+          )}
         </div>
       </div>
       <div className="banquet-dish-name">{name}</div>
@@ -160,9 +237,10 @@ export default function BanquetPage() {
                         <h4>{sectionLabels[section][lang]}</h4>
                       </div>
                       <div className="banquet-dishes-grid">
-                        {t(set, section).map((item, i) => (
-                          <DishCard key={i} name={item} />
-                        ))}
+                        {t(set, section).map((item, i) => {
+                          const ruName = set[section + '_ru'] ? set[section + '_ru'][i] : item;
+                          return <DishCard key={i} name={item} photoKey={ruName} />;
+                        })}
                       </div>
                     </div>
                   ))}

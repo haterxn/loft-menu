@@ -13,8 +13,8 @@ const __dirname = dirname(__filename);
 const ROOT = join(__dirname, '..');
 
 const app = express();
-const PORT = process.env.NODE_ENV === 'production' ? (process.env.PORT || 3001) : 3001;
-const JWT_SECRET = 'noroc-secret-key-change-in-production';
+const PORT = process.env.NODE_ENV === 'production' ? (process.env.PORT || 3001) : 3004;
+const JWT_SECRET = 'loft-secret-key-change-in-production';
 
 // Ensure uploads directory
 const uploadsDir = join(ROOT, 'public', 'uploads');

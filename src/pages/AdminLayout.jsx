@@ -20,7 +20,7 @@ export default function AdminLayout() {
     <div className="admin-layout">
       <aside className="admin-sidebar">
         <div className="admin-sidebar-brand">
-          NOROC <span>Админ-панель</span>
+          LOFT <span>Админ-панель</span>
         </div>
         <nav className="admin-nav">
           <NavLink to="/admin" end>Обзор</NavLink>

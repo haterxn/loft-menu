@@ -27,7 +27,7 @@ export default function AdminLogin() {
   return (
     <div className="admin-login">
       <div className="login-card">
-        <h1>NOROC</h1>
+        <h1>LOFT</h1>
         <p className="subtitle">Панель управления</p>
         {error && <div className="login-error">{error}</div>}
         <form onSubmit={handleSubmit}>
