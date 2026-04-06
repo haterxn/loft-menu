@@ -261,5 +261,16 @@ export default function generateBanquetPDF({ restaurantName, banquetSets, priceT
   const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const printWindow = window.open(url, '_blank');
-  printWindow.onafterprint = () => URL.revokeObjectURL(url);
+  if (printWindow) {
+    printWindow.onafterprint = () => URL.revokeObjectURL(url);
+  } else {
+    // Popup blocked — fallback: open via link click
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
 }
