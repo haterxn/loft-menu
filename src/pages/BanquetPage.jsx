@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import generateBanquetPDF from '../generateBanquetPDF';
 
 const banquetSets = [
   {
@@ -66,9 +67,9 @@ const sectionLabels = {
 };
 
 const sectionIcons = {
-  cold: '❄',
-  hot: '🔥',
-  dessert: '🍰',
+  cold: '',
+  hot: '',
+  dessert: '',
 };
 
 const dishPhotos = {
@@ -196,6 +197,20 @@ export default function BanquetPage() {
             {tier.price} MDL
           </button>
         ))}
+        <button
+          className="cat-tab back-tab"
+          onClick={() => generateBanquetPDF({
+            restaurantName: 'LOFT',
+            banquetSets,
+            priceTiers,
+            sectionLabels,
+            services,
+            lang,
+            accentColor: '#E8A849',
+          })}
+        >
+          PDF
+        </button>
         <Link to="/" className="cat-tab back-tab" style={{ textDecoration: 'none' }}>
           {lang === 'ru' ? 'Основное меню' : 'Meniul principal'}
         </Link>
